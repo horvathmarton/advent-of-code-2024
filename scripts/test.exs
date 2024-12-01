@@ -7,9 +7,7 @@ defmodule TestRunner do
 
     run_all_tests(directories)
 
-    last_value = Enum.sort(directories) |> List.last
-
-    run_solver_module(last_value)
+    run_solver_module(Enum.sort(directories) |> List.last)
   end
 
   def run_all_tests(directories) do
