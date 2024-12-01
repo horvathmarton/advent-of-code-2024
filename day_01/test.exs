@@ -19,8 +19,15 @@
       end
 
       def test_2() do
-        input = ""
-        expected_result = 4
+        input = """
+        3   4
+        4   3
+        2   5
+        1   3
+        3   9
+        3   3
+        """
+        expected_result = 31
 
         test(expected_result, Solution.solve_2(input), "day 01 / test 2")
       end

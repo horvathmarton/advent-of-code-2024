@@ -2,16 +2,18 @@ defmodule Solution do
   def solve_1(input) do
     { left, right } = parse_input(input)
 
-    diffs = Enum.zip(Enum.sort(left), Enum.sort(right))
+    Enum.zip(Enum.sort(left), Enum.sort(right))
       |> Enum.map(fn {left, right} -> abs(left - right) end)
-
-    Enum.sum(diffs)
+      |> Enum.sum()
   end
 
   def solve_2(input) do
-    parse_input(input)
+    { left, right } = parse_input(input)
 
-    "alma"
+    freqs = Enum.frequencies(right)
+
+    Enum.map(left, fn value -> value * (freqs[value] || 0) end)
+      |> Enum.sum()
   end
 
   def parse_input(input) do
