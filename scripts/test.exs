@@ -4,10 +4,11 @@ defmodule TestRunner do
       File.ls!(".")
       |> Enum.filter(&String.starts_with?(&1, "day_"))
       |> Enum.filter(&File.dir?(&1))
+      |> Enum.sort
 
     run_all_tests(directories)
 
-    run_solver_module(Enum.sort(directories) |> List.last)
+    run_solver_module(List.last(directories))
   end
 
   def run_all_tests(directories) do

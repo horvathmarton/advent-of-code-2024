@@ -79,7 +79,7 @@ defmodule CreateDay do
         Code.require_file("lib.exs")
 
         defmodule Test do
-          import Lib, only: [test: 4]
+          import Lib, only: [test: 3]
 
           def test_1() do
             input = ""
