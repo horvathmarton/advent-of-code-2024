@@ -1,10 +1,26 @@
 defmodule Solution02 do
   def solve_1(input) do
+    parsed = parse_input(input)
 
+    safe = Enum.map(parsed, &diff_pairs/1)
+      |> Enum.filter(&is_safe/1)
+
+    length(safe)
   end
 
   def solve_2(input) do
+    parsed = parse_input(input)
 
+    safe = Enum.map(parsed, &diff_pairs/1)
+      |> Enum.filter(&is_safe/1)
+
+    unsafe = Enum.map(parsed, fn line -> {line, diff_pairs(line)} end)
+      |> Enum.filter(fn {_, diff} -> !is_safe(diff) end)
+      |> Enum.map(fn {line, _} -> line end)
+
+    tolerated = Enum.filter(unsafe, &has_safe_subset/1)
+
+    length(safe) + length(tolerated)
   end
 
   def parse_input(input) do
@@ -40,5 +56,11 @@ defmodule Solution02 do
       Enum.reject(Enum.with_index(line), fn {_, i} -> i == index end)
       |> Enum.map(fn {element, _} -> element end)
     end)
+  end
+
+  def has_safe_subset(line) do
+    generate_tolerated_series(line)
+      |> Enum.map(&diff_pairs/1)
+      |> Enum.any?(&is_safe/1)
   end
 end
