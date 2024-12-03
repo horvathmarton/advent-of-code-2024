@@ -40,7 +40,7 @@ defmodule CreateDay do
     files = [
       {"input_1.txt", ""},
       {"input_2.txt", ""},
-      {"solution.exs", solution_template()},
+      {"solution.exs", solution_template(day_count)},
       {"test.exs", test_template(day_count)},
     ]
 
@@ -51,7 +51,7 @@ defmodule CreateDay do
     end)
   end
 
-  def solution_template() do
+  def solution_template(day_count) do
     """
     defmodule Solution#{day_count} do
       def solve_1(input) do
