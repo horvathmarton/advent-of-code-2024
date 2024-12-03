@@ -1,4 +1,4 @@
-defmodule Solution do
+defmodule Solution01 do
   def solve_1(input) do
     { left, right } = parse_input(input)
 

@@ -53,7 +53,7 @@ defmodule CreateDay do
 
   def solution_template() do
     """
-    defmodule Solution do
+    defmodule Solution#{day_count} do
       def solve_1(input) do
         parse_input(input)
 
@@ -78,21 +78,21 @@ defmodule CreateDay do
         Code.require_file("solution.exs", __DIR__)
         Code.require_file("lib.exs")
 
-        defmodule Test do
+        defmodule Test#{day_count} do
           import Lib, only: [test: 3]
 
           def test_1() do
             input = ""
             expected_result = 4
 
-            test(expected_result, Solution.solve_1(input), "day #{day_count} / test 1")
+            test(expected_result, Solution#{day_count}.solve_1(input), "day #{day_count} / test 1")
           end
 
           def test_2() do
             input = ""
             expected_result = 4
 
-            test(expected_result, Solution.solve_2(input), "day #{day_count} / test 2")
+            test(expected_result, Solution#{day_count}.solve_2(input), "day #{day_count} / test 2")
           end
         end
     """

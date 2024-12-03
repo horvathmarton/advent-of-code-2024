@@ -39,13 +39,15 @@ defmodule TestRunner do
 
   def run_test(directory, test_count) do
     input_file = Path.join(directory, "input_#{test_count}.txt")
+    [_, day_count] = String.split(directory, "_")
+    module_name = "Test#{day_count}"
 
     if has_content?(input_file) do
       try do
-        apply(String.to_atom("Elixir.Test"), String.to_atom("test_#{test_count}"), [])
+        apply(String.to_atom("Elixir.#{module_name}"), String.to_atom("test_#{test_count}"), [])
       rescue
         error ->
-          IO.puts(:stderr, "Unable to run Test.test_#{test_count}() in #{directory}")
+          IO.puts(:stderr, "Unable to run #{module_name}.test_#{test_count}() in #{directory}")
           IO.inspect error
       end
     end
@@ -60,17 +62,19 @@ defmodule TestRunner do
 
   def run_solver(directory, count) do
     input_file = Path.join(directory, "input_#{count}.txt")
+    [_, day_count] = String.split(directory, "_")
+    module_name = "Solution#{day_count}"
 
     if has_content?(input_file) do
       try do
         {:ok, input} = File.read(input_file)
 
-        result = apply(String.to_atom("Elixir.Solution"), String.to_atom("solve_#{count}"), [input])
+        result = apply(String.to_atom("Elixir.#{module_name}"), String.to_atom("solve_#{count}"), [input])
 
         IO.inspect(result, label: "Solution for #{count}")
       rescue
         error ->
-          IO.puts(:stderr, "Unable to run Solver.solve_#{count}() in #{directory}")
+          IO.puts(:stderr, "Unable to run #{module_name}.solve_#{count}() in #{directory}")
           IO.inspect error
       end
     end
