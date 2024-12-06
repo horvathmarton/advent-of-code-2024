@@ -15,9 +15,13 @@ defmodule Solution04 do
   end
 
   def solve_2(input) do
-    parse_input(input)
+    matrix = parse_input(input)
+    dimensions = get_dimensions(matrix)
 
-    "alma"
+    find_occurances(matrix, "A")
+    |> Enum.map(&Enum.map(get_corner_coords(&1, dimensions), fn next -> {&1, next} end))
+    |> Enum.map(fn pairs -> count_mases(pairs, matrix) end)
+    |> Enum.count(&(&1 > 1))
   end
 
   def parse_input(input) do
@@ -48,16 +52,19 @@ defmodule Solution04 do
     |> Enum.filter(fn coord -> is_valid_coord(coord, dimensions) end)
   end
 
-  def get_next_coord(prev, curr, dimensions) do
-    next = %Coord{
+  def get_corner_coords(curr, dimensions) do
+    offset_matrix = for x <- [-1, 1], y <- [-1, 1], do: {x, y}
+
+    Enum.map(offset_matrix, fn {x, y} -> %Coord{x: curr.x + x, y: curr.y + y} end)
+    |> Enum.reject(fn coord -> coord == curr end)
+    |> Enum.filter(fn coord -> is_valid_coord(coord, dimensions) end)
+  end
+
+  def get_next_coord(prev, curr) do
+    %Coord{
       x: curr.x + (curr.x - prev.x),
       y: curr.y + (curr.y - prev.y)
     }
-
-    cond do
-      is_valid_coord(next, dimensions) -> next
-      true -> nil
-    end
   end
 
   def does_match(matrix, %{prev: prev, curr: curr, text: text}) do
@@ -65,17 +72,24 @@ defmodule Solution04 do
     [char | rest] = String.split(text, "", trim: true)
 
     actual = Enum.at(Enum.at(matrix, curr.y), curr.x)
-    next = get_next_coord(prev, curr, dimensions)
+    next = get_next_coord(prev, curr)
 
     cond do
       length(rest) == 0 && char == actual -> true
       actual != char -> false
-      is_nil(next) -> false
+      !is_valid_coord(next, dimensions) -> false
       true -> does_match(matrix, %{prev: curr, curr: next, text: Enum.join(rest, "")})
     end
   end
 
   def get_dimensions(matrix) do
     %Coord{x: length(Enum.at(matrix, 0)), y: length(matrix)}
+  end
+
+  def count_mases(pairs, matrix) do
+    Enum.map(pairs, fn {center, side} ->
+      does_match(matrix, %{prev: get_next_coord(center, side), curr: side, text: "MAS"})
+    end)
+    |> Enum.count(& &1)
   end
 end

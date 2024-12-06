@@ -23,8 +23,19 @@
       end
 
       def test_2() do
-        input = ""
-        expected_result = 4
+        input = """
+        MMMSXXMASM
+        MSAMXMSMSA
+        AMXSXMAAMM
+        MSAMASMSMX
+        XMASAMXAMM
+        XXAMMXXAMA
+        SMSMSASXSS
+        SAXAMASAAA
+        MAMMMXMMMM
+        MXMXAXMASX
+        """
+        expected_result = 9
 
         test(expected_result, Solution04.solve_2(input), "day 04 / test 2")
       end
