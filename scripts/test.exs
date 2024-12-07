@@ -48,7 +48,7 @@ defmodule TestRunner do
       rescue
         error ->
           IO.puts(:stderr, "Unable to run #{module_name}.test_#{test_count}() in #{directory}")
-          IO.inspect error
+          IO.inspect(error, label: "Error")
       end
     end
   end
@@ -75,7 +75,7 @@ defmodule TestRunner do
       rescue
         error ->
           IO.puts(:stderr, "Unable to run #{module_name}.solve_#{count}() in #{directory}")
-          IO.inspect error
+          IO.inspect(error, label: "Error")
       end
     end
   end
